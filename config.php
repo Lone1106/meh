@@ -15,6 +15,8 @@ const RELATIONSHIPS = [
     'sonstiges' => 'Sonstiges',
 ];
 
+require_once __DIR__ . '/mailer.php';
+
 function ensure_session(): void
 {
     if (session_status() !== PHP_SESSION_ACTIVE) {

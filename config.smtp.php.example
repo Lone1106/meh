@@ -1,0 +1,18 @@
+<?php
+
+declare(strict_types=1);
+
+// Copy this file to config.smtp.php and fill in real credentials.
+// config.smtp.php is gitignored and must NEVER be committed.
+// If config.smtp.php doesn't exist, email notifications are silently skipped.
+
+return [
+    'host' => 'smtp.example.com',
+    'port' => 587,
+    'encryption' => 'tls',          // 'tls' = STARTTLS (typically port 587), 'ssl' = implicit TLS (typically port 465)
+    'username' => 'your-smtp-username',
+    'password' => 'your-smtp-password',
+    'from' => 'feedback@example.com',
+    'from_name' => 'Meh Feedback',
+    'to' => 'you@example.com',      // where notifications are sent
+];

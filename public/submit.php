@@ -60,6 +60,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             );
             $stmt->execute([$name, $rating, $comment, $relationship, ip_hash(), gmdate('Y-m-d H:i:s')]);
 
+            notify_feedback_submitted([
+                'name' => $name,
+                'rating' => $rating,
+                'comment' => $comment,
+                'relationship' => $relationship,
+            ]);
+
             unset($_SESSION['csrf_token']);
             flash_set('Danke für dein Feedback!', 'success');
             header('Location: /');

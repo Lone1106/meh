@@ -11,6 +11,8 @@ No framework, no build step — plain PHP + SQLite.
 - Spam protection: CSRF token, honeypot field, minimum fill-time check,
   per-IP cooldown + daily cap
 - SQLite storage, no database server required
+- Optional email notification on new feedback, sent via a dependency-free
+  SMTP client (`mailer.php`)
 
 ## Requirements
 
@@ -31,7 +33,10 @@ The site will be available at `https://meh-feedback.ddev.site`.
 ## Project structure
 
 ```
-config.php         DB connection, session, CSRF, rate limiting
+config.php              DB connection, session, CSRF, rate limiting
+config.smtp.php         SMTP credentials (gitignored, not committed)
+config.smtp.php.example template for config.smtp.php
+mailer.php              dependency-free SMTP client + notification email
 data/               feedback.sqlite (created automatically, gitignored)
 public/             webserver document root
   index.php         feedback grid
@@ -64,6 +69,19 @@ Returns:
 
 `limit` is capped at 100. CORS is open (`Access-Control-Allow-Origin: *`) so
 it can be fetched from other pages/origins.
+
+## Email notifications
+
+Each new feedback submission can trigger a notification email over SMTP.
+
+```sh
+cp config.smtp.php.example config.smtp.php
+```
+
+Fill in `config.smtp.php` with your SMTP host, port, encryption (`tls` for
+STARTTLS, `ssl` for implicit TLS), credentials, and the `to` address.
+`config.smtp.php` is gitignored — it holds real credentials and must never be
+committed. If it doesn't exist, notifications are silently skipped.
 
 ## Deployment notes
 
