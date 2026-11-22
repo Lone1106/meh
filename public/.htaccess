@@ -1,0 +1,15 @@
+Options -Indexes
+
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+    # Browsers probe /favicon.ico directly, ignoring <link> tags.
+    RewriteRule ^favicon\.ico$ favicon/favicon.ico [L]
+
+    # Clean routes: /feedback -> submit.php, /api -> api.php
+    RewriteRule ^feedback$ submit.php [L]
+    RewriteRule ^api$ api.php [L]
+</IfModule>
+
+<IfModule mod_mime.c>
+    AddType application/manifest+json .webmanifest
+</IfModule>
