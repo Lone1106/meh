@@ -12,7 +12,9 @@ No framework, no build step — plain PHP + SQLite.
   per-IP cooldown + daily cap
 - SQLite storage, no database server required
 - Optional email notification on new feedback, sent via a dependency-free
-  SMTP client (`mailer.php`)
+  SMTP client (`lib/mailer.php`)
+- Open Graph / Twitter card meta tags with a baked social-share image, so
+  links look right when pasted into chats (Instagram, iMessage, etc.)
 
 ## Requirements
 
@@ -36,15 +38,18 @@ The site will be available at `https://meh-feedback.ddev.site`.
 config.php              DB connection, session, CSRF, rate limiting
 config.smtp.php         SMTP credentials (gitignored, not committed)
 config.smtp.php.example template for config.smtp.php
-mailer.php              dependency-free SMTP client + notification email
-data/               feedback.sqlite (created automatically, gitignored)
-public/             webserver document root
-  index.php         feedback grid
-  submit.php        submission form + handler
-  api.php           read-only JSON API
-  assets/           CSS, logo, self-hosted fonts
-  favicon/          favicon + web manifest files
-design/             original logo/favicon source files (not web-accessible)
+lib/                    app code with no business being in public/
+  mailer.php            dependency-free SMTP client + notification email
+  mail/                 email templates (plain-text + HTML)
+data/                   feedback.sqlite (created automatically, gitignored)
+public/                 webserver document root
+  index.php             feedback grid
+  submit.php            submission form + handler
+  api.php               read-only JSON API
+  assets/               CSS, logo, self-hosted fonts, og-image.png
+  favicon/              favicon + web manifest files
+design/                 source files, not web-accessible
+  generate-og-image.py  regenerates public/assets/og-image.png
 ```
 
 ## API
@@ -83,6 +88,24 @@ STARTTLS, `ssl` for implicit TLS), credentials, and the `to` address.
 `config.smtp.php` is gitignored — it holds real credentials and must never be
 committed. If it doesn't exist, notifications are silently skipped.
 
+## Social link previews
+
+`index.php` and `submit.php` carry Open Graph/Twitter meta tags pointing at
+`public/assets/og-image.png`, a pre-baked 1200x630 PNG with an opaque
+background. Without these tags, chat apps that unfurl links (Instagram DMs,
+iMessage, …) fell back to scraping the header `<img>` — the site logo SVG,
+which has a *transparent* background and black artwork, so it rendered as a
+near-invisible blurry smear once flattened onto a dark card background.
+
+To change the image (e.g. after a logo update), edit and rerun:
+
+```sh
+python3 design/generate-og-image.py
+```
+
+Requires Pillow (`pip install Pillow`) and the macOS system fonts Arial /
+Arial Bold.
+
 ## Deployment notes
 
 - Point your webserver's document root at `public/`.
@@ -92,3 +115,5 @@ committed. If it doesn't exist, notifications are silently skipped.
 - Make sure `data/` is writable by the webserver user.
 - Change `RELATIONSHIPS` in `config.php` if you want different relationship
   options.
+- Update `SITE_URL` in `config.php` if the site ever moves to a different
+  domain — it's used for the Open Graph/Twitter absolute URLs.

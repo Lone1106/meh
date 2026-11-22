@@ -3,6 +3,8 @@ declare(strict_types=1);
 
 const DB_PATH = __DIR__ . '/data/feedback.sqlite';
 
+const SITE_URL = 'https://meh.janrei.de';
+
 // Rate limiting: how many submissions an IP may make in each window.
 const RATE_LIMIT_COOLDOWN_SECONDS = 60;   // min gap between two submissions
 const RATE_LIMIT_DAILY_MAX = 5;           // max submissions per IP per day
@@ -15,7 +17,7 @@ const RELATIONSHIPS = [
     'sonstiges' => 'Sonstiges',
 ];
 
-require_once __DIR__ . '/mailer.php';
+require_once __DIR__ . '/lib/mailer.php';
 
 function ensure_session(): void
 {

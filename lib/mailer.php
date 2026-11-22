@@ -12,7 +12,7 @@ function smtp_config(): ?array
     static $loaded = false;
     if (!$loaded) {
         $loaded = true;
-        $path = __DIR__ . '/config.smtp.php';
+        $path = __DIR__ . '/../config.smtp.php';
         if (is_file($path)) {
             $config = require $path;
         }

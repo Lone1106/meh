@@ -32,6 +32,15 @@ function render_stars(int $rating): string
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Meh &mdash; Feedback</title>
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="Meh">
+    <meta property="og:title" content="Meh &mdash; Feedback">
+    <meta property="og:description" content="Weil auch mittelm&auml;&szlig;ige Meinungen eine B&uuml;hne verdienen.">
+    <meta property="og:url" content="<?= e(SITE_URL) ?>/">
+    <meta property="og:image" content="<?= e(SITE_URL) ?>/assets/og-image.png">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta name="twitter:card" content="summary_large_image">
     <link rel="icon" type="image/png" href="/favicon/favicon-96x96.png" sizes="96x96">
     <link rel="icon" type="image/svg+xml" href="/favicon/favicon.svg">
     <link rel="shortcut icon" href="/favicon/favicon.ico">
